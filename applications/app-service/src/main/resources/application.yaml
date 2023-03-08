@@ -14,6 +14,12 @@ spring:
   data:
     mongodb:
       uri: "mongodb://localhost:27017/test"
+  rabbitmq:
+    host: "localhost"
+    username: "guest"
+    password: "guest"
+    virtual-host: /
+    port: 5672
 management:
   endpoints:
     web:

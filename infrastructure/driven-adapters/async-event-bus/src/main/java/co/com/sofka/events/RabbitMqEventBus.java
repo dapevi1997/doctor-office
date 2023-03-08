@@ -5,7 +5,9 @@ import co.com.sofka.model.patient.generic.DomainEvent;
 import co.com.sofka.serializer.JSONMapper;
 import co.com.sofka.usecase.generic.gateways.EventBus;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.stereotype.Component;
 
+@Component
 public class RabbitMqEventBus implements EventBus {
     public static final String EXCHANGE = "core-posts-events";
     public static final String ROUTING_KEY = "events.routing.key";
