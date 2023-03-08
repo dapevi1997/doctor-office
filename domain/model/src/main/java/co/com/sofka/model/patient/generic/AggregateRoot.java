@@ -15,6 +15,7 @@ public abstract class AggregateRoot<I extends Identity> extends Entity<I> {
         var nameClass = identity().getClass().getSimpleName();
         var aggregate = nameClass.replaceAll("(Identity|Id|ID)", "").toLowerCase();
         event.setAggregateName(aggregate);
+        //System.out.println("Identity" + identity().value());
         event.setAggregateRootId(identity().value());
         return changeEventSubscriber.appendChange(event);
     }

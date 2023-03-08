@@ -40,18 +40,18 @@ public class RabbitMqEventHandler {
         }
     }
 
-    @RabbitListener(queues = GENERAL_QUEUE)
+/*    @RabbitListener(queues = GENERAL_QUEUE)
     public void listenerGeneral(String message) throws ClassNotFoundException {
         Notification notification = Notification.from(message);
         if(notification.getType()
                 .equals("co.com.alpha.bcb.model.post.events.PostCreated")){
             logger.info("2:" + notification.toString());
-            /*this.useCase.apply(Mono
+            *//*this.useCase.apply(Mono
                     .just((PostCreated) mapper.readFromJson(notification.getBody(),
                             PostCreated.class)))
-                    .subscribe();*/
+                    .subscribe();*//*
         }else{
             logger.info("2:" + "we currently don't have a listener for that event " +notification.toString());
         }
-    }
+    }*/
 }

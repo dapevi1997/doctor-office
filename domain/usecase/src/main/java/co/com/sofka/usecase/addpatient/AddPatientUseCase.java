@@ -27,7 +27,8 @@ public class AddPatientUseCase extends UseCaseForCommand<AddPatientCommand> {
     @Override
     public Flux<DomainEvent> apply(Mono<AddPatientCommand> addPatientCommandMono) {
         return addPatientCommandMono.flatMapIterable(command->{
-            Patient patient = new Patient(PatientId.of(command.getId()),new Identity(command.getIdentity()),
+
+            Patient patient = new Patient(PatientId.of(command.getPatientId()),new Identity(command.getIdentity()),
                     new ClinicHistory(command.getClinicHistory()));
             return patient.getUncommittedChanges();
         }).flatMap(event -> {

@@ -3,24 +3,24 @@ package co.com.sofka.usecase.generic.commands;
 import co.com.sofka.usecase.generic.Command;
 
 public class AddPatientCommand extends Command {
-    private String id;
+    private String patientId;
     private String identity;
     private String clinicHistory;
     public AddPatientCommand() {
     }
 
-    public AddPatientCommand(String id, String identity, String clinicHistory) {
-        this.id = id;
+    public AddPatientCommand(String patientId, String identity, String clinicHistory) {
+        this.patientId = patientId;
         this.identity = identity;
         this.clinicHistory = clinicHistory;
     }
 
-    public String getId() {
-        return id;
+    public String getPatientId() {
+        return patientId;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this.patientId = id;
     }
 
     public String getIdentity() {
