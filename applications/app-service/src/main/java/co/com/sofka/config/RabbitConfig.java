@@ -12,6 +12,5 @@ public class RabbitConfig {
     public static final String ROUTING_KEY = "events.routing.key";
     public static final String ROUTING_KEY_GENERAL = "events.#";
 
-    @Bean
-    public RabbitAdmin
+
 }

@@ -46,7 +46,7 @@ public class Patient  extends AggregateRoot<PatientId> {
 
     }
 
-    public void AddPatient(PatientId patientId, Identity identity, ClinicHistory clinicHistory){
+    public void addPatient(PatientId patientId, Identity identity, ClinicHistory clinicHistory){
         Objects.requireNonNull(patientId);
         Objects.requireNonNull(identity);
         Objects.requireNonNull(clinicHistory);
