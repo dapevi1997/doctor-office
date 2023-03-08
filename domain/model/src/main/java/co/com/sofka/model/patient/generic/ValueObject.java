@@ -1,4 +1,4 @@
-package co.com.alpha.bcb.model.post.generic;
+package co.com.sofka.model.patient.generic;
 
 import java.io.Serializable;
 
