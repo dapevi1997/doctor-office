@@ -16,3 +16,5 @@ project(':model').projectDir = file('./domain/model')
 project(':usecase').projectDir = file('./domain/usecase')
 include ':serializer'
 project(':serializer').projectDir = file('./infrastructure/helpers/serializer')
+include ':mongo-repository'
+project(':mongo-repository').projectDir = file('./infrastructure/driven-adapters/mongo-repository')
