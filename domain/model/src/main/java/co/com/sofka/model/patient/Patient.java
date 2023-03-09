@@ -1,21 +1,14 @@
 package co.com.sofka.model.patient;
-import co.com.sofka.model.patient.entities.Review;
-import co.com.sofka.model.patient.events.CitationAdded;
-import co.com.sofka.model.patient.events.CitationCanceled;
-import co.com.sofka.model.patient.events.PatientAdded;
-import co.com.sofka.model.patient.events.WeekStateConsulted;
+
+
+import co.com.sofka.model.patient.events.*;
+import co.com.sofka.model.week.events.WeekStateConsulted;
 import co.com.sofka.model.patient.generic.AggregateRoot;
 import co.com.sofka.model.patient.generic.DomainEvent;
 import co.com.sofka.model.patient.values.ClinicHistory;
 import co.com.sofka.model.patient.values.PatientId;
 import co.com.sofka.model.patient.values.Identity;
-import co.com.sofka.model.week.values.CitationId;
-import co.com.sofka.model.week.values.CitationState;
-import co.com.sofka.model.week.values.Infomation;
-import lombok.Builder;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
@@ -62,24 +55,33 @@ public class Patient  extends AggregateRoot<PatientId> {
 
     }
 
-    public void addCitation(CitationId citationId, Infomation infomation, CitationState citationState, PatientId patientId){
+    public void updateIdentity(PatientId patientId, Identity identity){
         Objects.requireNonNull(patientId);
-        Objects.requireNonNull(citationId);
-        Objects.requireNonNull(infomation);
-        Objects.requireNonNull(citationState);
-        appendChange(new CitationAdded(citationId.value(), infomation.value(), citationState.value(), patientId.value()));
+        Objects.requireNonNull(identity);
+        appendChange(new IdentityUpdated(patientId.value(), identity.value()));
 
     }
-    public void cancelateCitation(){
+    public void addReview(){
 
-        appendChange(new CitationCanceled());
-
-    }
-    public void consultWeekState(){
-
-        appendChange(new WeekStateConsulted());
+        appendChange(new ReviewAdded());
 
     }
+
+    public void getClinicHistory(){
+
+        appendChange(new ClinicHistoryObtained());
+
+    }
+
+    public void deletePatient(){
+
+        appendChange(new PatientDeleted());
+
+    }
+
+
+
+
 
     @Override
     public String toString() {
