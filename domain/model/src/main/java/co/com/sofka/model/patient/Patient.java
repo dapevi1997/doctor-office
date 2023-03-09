@@ -1,11 +1,17 @@
 package co.com.sofka.model.patient;
 import co.com.sofka.model.patient.entities.Review;
+import co.com.sofka.model.patient.events.CitationAdded;
+import co.com.sofka.model.patient.events.CitationCanceled;
 import co.com.sofka.model.patient.events.PatientAdded;
+import co.com.sofka.model.patient.events.WeekStateConsulted;
 import co.com.sofka.model.patient.generic.AggregateRoot;
 import co.com.sofka.model.patient.generic.DomainEvent;
 import co.com.sofka.model.patient.values.ClinicHistory;
 import co.com.sofka.model.patient.values.PatientId;
 import co.com.sofka.model.patient.values.Identity;
+import co.com.sofka.model.week.values.CitationId;
+import co.com.sofka.model.week.values.CitationState;
+import co.com.sofka.model.week.values.Infomation;
 import lombok.Builder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -53,6 +59,25 @@ public class Patient  extends AggregateRoot<PatientId> {
         Objects.requireNonNull(identity);
         Objects.requireNonNull(clinicHistory);
         appendChange(new PatientAdded(patientId.value(), identity.value(), clinicHistory.value()));
+
+    }
+
+    public void addCitation(CitationId citationId, Infomation infomation, CitationState citationState, PatientId patientId){
+        Objects.requireNonNull(patientId);
+        Objects.requireNonNull(citationId);
+        Objects.requireNonNull(infomation);
+        Objects.requireNonNull(citationState);
+        appendChange(new CitationAdded(citationId.value(), infomation.value(), citationState.value(), patientId.value()));
+
+    }
+    public void cancelateCitation(){
+
+        appendChange(new CitationCanceled());
+
+    }
+    public void consultWeekState(){
+
+        appendChange(new WeekStateConsulted());
 
     }
 
