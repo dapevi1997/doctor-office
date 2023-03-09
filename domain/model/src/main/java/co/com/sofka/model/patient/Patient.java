@@ -30,6 +30,8 @@ public class Patient  extends AggregateRoot<PatientId> {
 
     public Patient(PatientId patientId, /*List<Review> reviews,*/ Identity identity, ClinicHistory clinicHistory){
         super(patientId);
+        this.identity = identity;
+        this.clinicHistory = clinicHistory;
         subscribe(new PatientChange(this));
         appendChange(new PatientAdded(patientId.value(), identity.value(), clinicHistory.value())).apply();
     }
@@ -54,6 +56,11 @@ public class Patient  extends AggregateRoot<PatientId> {
 
     }
 
-
-
+    @Override
+    public String toString() {
+        return "Patient{" +
+                "identity=" + identity +
+                ", clinicHistory=" + clinicHistory +
+                '}';
+    }
 }

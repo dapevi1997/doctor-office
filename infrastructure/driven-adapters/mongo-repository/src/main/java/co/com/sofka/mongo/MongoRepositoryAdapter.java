@@ -2,11 +2,8 @@ package co.com.sofka.mongo;
 
 import co.com.sofka.model.patient.generic.DomainEvent;
 import co.com.sofka.mongo.data.StoredEvent;
-import co.com.sofka.mongo.helper.AdapterOperations;
 import co.com.sofka.serializer.JSONMapper;
 import co.com.sofka.usecase.generic.gateways.DomainEventRepository;
-import org.reactivecommons.utils.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;

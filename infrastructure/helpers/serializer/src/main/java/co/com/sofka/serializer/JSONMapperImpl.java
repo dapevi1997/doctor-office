@@ -33,6 +33,15 @@ public class JSONMapperImpl implements JSONMapper{
 
     @Override
     public Object readFromJson(String json, Class<?> clazz) {
-        return null;
+
+        try {
+            return mapper.readValue(json, clazz);
+        }catch (JsonProcessingException e ){
+            logger.warning(e.getMessage());
+            return "";
+        }catch (ClassCastException e){
+            logger.warning(e.getMessage());
+            return "";
+        }
     }
 }

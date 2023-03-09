@@ -19,4 +19,11 @@ public class Identity implements ValueObject<String> {
     public String getIdentity() {
         return identity;
     }
+
+    @Override
+    public String toString() {
+        return "Identity{" +
+                "identity='" + identity + '\'' +
+                '}';
+    }
 }

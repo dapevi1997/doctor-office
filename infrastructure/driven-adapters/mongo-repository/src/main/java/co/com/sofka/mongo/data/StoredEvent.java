@@ -24,9 +24,14 @@ public class StoredEvent {
 
     public DomainEvent deserializeEvent(JSONMapper eventSerializer) {
         try{
+            System.out.println("event body: "+this.getEventBody());
+            System.out.println("getTypeName" + this.getTypeName());
             return (DomainEvent) eventSerializer
                     .readFromJson(this.getEventBody(), Class.forName(this.getTypeName()));
         }catch (ClassNotFoundException e){
+            return null;
+        }catch (NullPointerException e){
+            System.out.println("NullPointereeeee");
             return null;
         }
 

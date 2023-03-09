@@ -17,4 +17,11 @@ public class ClinicHistory implements ValueObject<String> {
     public String getClinicHistory() {
         return clinicHistory;
     }
+
+    @Override
+    public String toString() {
+        return "ClinicHistory{" +
+                "clinicHistory='" + clinicHistory + '\'' +
+                '}';
+    }
 }
