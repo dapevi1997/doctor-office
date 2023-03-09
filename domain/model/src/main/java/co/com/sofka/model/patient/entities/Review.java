@@ -8,8 +8,8 @@ import co.com.sofka.model.patient.values.ReviewId;
 public class Review extends Entity<ReviewId> {
     private Annotation annotation;
 
-    public Review(ReviewId entityId, Annotation annotation){
-        super(entityId);
+    public Review(ReviewId reviewId, Annotation annotation){
+        super(reviewId);
         this.annotation = annotation;
     }
 
