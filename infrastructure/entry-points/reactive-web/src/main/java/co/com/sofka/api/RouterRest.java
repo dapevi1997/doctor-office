@@ -5,6 +5,8 @@ import co.com.sofka.usecase.addpatient.AddPatientUseCase;
 import co.com.sofka.usecase.addreview.AddReviewUseCase;
 import co.com.sofka.usecase.generic.commands.AddPatientCommand;
 import co.com.sofka.usecase.generic.commands.AddReviewCommand;
+import co.com.sofka.usecase.generic.commands.UpdatePersonalDataCommand;
+import co.com.sofka.usecase.updatepersonaldata.UpdatePersonalDataUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -37,6 +39,18 @@ public class RouterRest {
                         .body(BodyInserters.fromPublisher(addReviewUseCase.apply(
                                 request
                                         .bodyToMono(AddReviewCommand.class)
+                        ), DomainEvent.class)));
+
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> updatePersonalData(UpdatePersonalDataUseCase updatePersonalDataUseCase) {
+        return route(
+                POST("/api/update/personalData").and(accept(MediaType.APPLICATION_JSON)), request -> ServerResponse.ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(BodyInserters.fromPublisher(updatePersonalDataUseCase.apply(
+                                request
+                                        .bodyToMono(UpdatePersonalDataCommand.class)
                         ), DomainEvent.class)));
 
     }

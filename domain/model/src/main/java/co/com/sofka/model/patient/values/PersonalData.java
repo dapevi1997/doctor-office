@@ -4,26 +4,26 @@ import co.com.sofka.model.patient.generic.ValueObject;
 
 public class PersonalData implements ValueObject<String> {
 
-   private final String identity;
+   private final String personalData;
 
-    public PersonalData(String identity) {
+    public PersonalData(String personalData) {
 
-        this.identity = identity;
+        this.personalData = personalData;
     }
 
     @Override
     public String value() {
-        return identity;
+        return personalData;
     }
 
-    public String getIdentity() {
-        return identity;
+    public String getPersonalData() {
+        return personalData;
     }
 
     @Override
     public String toString() {
         return "Identity{" +
-                "identity='" + identity + '\'' +
+                "identity='" + personalData + '\'' +
                 '}';
     }
 }

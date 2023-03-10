@@ -16,7 +16,7 @@ public class PatientChange extends EventChange {
             patient.personalData = new PersonalData(event.getIdentity());
 
         });
-        apply((IdentityUpdated event) -> {
+        apply((PersonalDataUpdated event) -> {
 
 
         });

@@ -52,10 +52,11 @@ public class Patient  extends AggregateRoot<PatientId> {
 
     }
 
-    public void updateIdentity(PatientId patientId, PersonalData personalData){
+    public void updatePersonalData(PatientId patientId, PersonalData personalData){
         Objects.requireNonNull(patientId);
         Objects.requireNonNull(personalData);
-        appendChange(new IdentityUpdated(patientId.value(), personalData.value()));
+        subscribe(new PatientChange(this));
+        appendChange(new PersonalDataUpdated(patientId.value(), personalData.value()));
 
     }
     public void addReview(PatientId patientId, ReviewId reviewId, Annotation annotation){
