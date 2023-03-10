@@ -1,13 +1,11 @@
 package co.com.sofka.api;
 
 import co.com.sofka.model.patient.generic.DomainEvent;
+import co.com.sofka.usecase.addcitation.AddCitationUseCase;
 import co.com.sofka.usecase.addpatient.AddPatientUseCase;
 import co.com.sofka.usecase.addreview.AddReviewUseCase;
 import co.com.sofka.usecase.addweek.AddWeekUseCase;
-import co.com.sofka.usecase.generic.commands.AddPatientCommand;
-import co.com.sofka.usecase.generic.commands.AddReviewCommand;
-import co.com.sofka.usecase.generic.commands.AddWeekCommand;
-import co.com.sofka.usecase.generic.commands.UpdatePersonalDataCommand;
+import co.com.sofka.usecase.generic.commands.*;
 import co.com.sofka.usecase.updatepersonaldata.UpdatePersonalDataUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -65,6 +63,18 @@ public class RouterRest {
                         .body(BodyInserters.fromPublisher(addWeekUseCase.apply(
                                 request
                                         .bodyToMono(AddWeekCommand.class)
+                        ), DomainEvent.class)));
+
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> addCitation(AddCitationUseCase addCitationUseCase) {
+        return route(
+                POST("/api/add/citation").and(accept(MediaType.APPLICATION_JSON)), request -> ServerResponse.ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(BodyInserters.fromPublisher(addCitationUseCase.apply(
+                                request
+                                        .bodyToMono(AddCitationCommand.class)
                         ), DomainEvent.class)));
 
     }

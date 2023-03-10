@@ -24,7 +24,7 @@ public class AddPatientEventUseCase implements Function<Mono<PatientAdded>, Flux
     public Flux<DomainEvent> apply(Mono<PatientAdded> patientAddedMono) {
         return patientAddedMono.flatMapIterable(event -> {
                     Patient patient = Patient.from(PatientId.of(event.aggregateRootId()), List.of(event));
-                    repository.savePatient(patient);
+
                    /* patient.addPatient(PatientId.of(event.getId()),
                             new Identity(event.getIdentity()),
                             new ClinicHistory(event.getClinicHistory()));*/

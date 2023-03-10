@@ -9,5 +9,5 @@ public interface DomainEventRepository {
     Flux<DomainEvent> findById(String aggregateId);
     Mono<DomainEvent> saveEvent(DomainEvent event);
 
-    Mono<Patient> savePatient(Patient patient);
+    Mono<Boolean> exist(String aggregateId);
 }
