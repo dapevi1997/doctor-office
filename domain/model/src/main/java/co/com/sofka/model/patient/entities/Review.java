@@ -12,12 +12,12 @@ public class Review extends Entity<ReviewId> {
     private Annotation annotation;
 
 
-    public Review(ReviewId reviewId, PatientId patientId,Annotation annotation) {
+    public Review(PatientId patientId, ReviewId reviewId,Annotation annotation) {
 
         super(reviewId);
 
 
-        this.annotation = annotation;
+       // this.annotation = annotation;
     }
 
 

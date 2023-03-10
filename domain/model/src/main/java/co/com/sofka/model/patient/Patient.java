@@ -59,7 +59,7 @@ public class Patient  extends AggregateRoot<PatientId> {
 
     }
     public void addReview(PatientId patientId, ReviewId reviewId, Annotation annotation){
-
+        subscribe(new PatientChange(this));
         appendChange(new ReviewAdded(patientId.value(), reviewId.value(), annotation.value()));
 
     }

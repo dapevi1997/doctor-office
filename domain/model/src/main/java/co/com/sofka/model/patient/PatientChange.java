@@ -21,8 +21,8 @@ public class PatientChange extends EventChange {
 
         });
         apply((ReviewAdded event) -> {
-            Review review = new Review(ReviewId.of(event.getIdReview()), PatientId.of(event.getPatientId()), new Annotation(event.getAnnotation()));
-            patient.reviews.add(review);
+            Review review = new Review(PatientId.of(event.getPatientId()),ReviewId.of(event.getIdReview()),  new Annotation(event.getAnnotation()));
+           // patient.reviews.add(review);
 
 
         });

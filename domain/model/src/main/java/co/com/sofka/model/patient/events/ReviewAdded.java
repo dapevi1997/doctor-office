@@ -11,7 +11,7 @@ public class ReviewAdded extends DomainEvent {
     public ReviewAdded() {
         super("perez.daniel.reviewadded");
     }
-    public ReviewAdded(String idReview, String annotation, String patientId){
+    public ReviewAdded(String patientId,String idReview, String annotation ){
         super("perez.daniel.reviewadded");
         this.idReview = idReview;
         this.annotation = annotation;
