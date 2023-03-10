@@ -2,11 +2,11 @@ package co.com.sofka.model.patient.values;
 
 import co.com.sofka.model.patient.generic.ValueObject;
 
-public class Identity implements ValueObject<String> {
+public class PersonalData implements ValueObject<String> {
 
    private final String identity;
 
-    public Identity( String identity) {
+    public PersonalData(String identity) {
 
         this.identity = identity;
     }

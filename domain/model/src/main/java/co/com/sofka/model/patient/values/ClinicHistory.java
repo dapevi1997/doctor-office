@@ -5,7 +5,11 @@ import co.com.sofka.model.patient.generic.ValueObject;
 public class ClinicHistory implements ValueObject<String> {
     private String clinicHistory;
 
+    public ClinicHistory() {
+    }
+
     public ClinicHistory(String clinicHistory) {
+        this();
         this.clinicHistory = clinicHistory;
     }
 

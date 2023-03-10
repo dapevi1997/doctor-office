@@ -1,5 +1,6 @@
 package co.com.sofka.mongo;
 
+import co.com.sofka.model.patient.Patient;
 import co.com.sofka.model.patient.generic.DomainEvent;
 import co.com.sofka.mongo.data.StoredEvent;
 import co.com.sofka.serializer.JSONMapper;
@@ -42,5 +43,10 @@ public class MongoRepositoryAdapter implements DomainEventRepository
         eventStored.setEventBody(StoredEvent.wrapEvent(event, eventSerializer));
         return template.save(eventStored)
                 .map(storeEvent -> storeEvent.deserializeEvent(eventSerializer));
+    }
+
+    @Override
+    public Mono<Patient> savePatient(Patient patient) {
+        return template.save(patient);
     }
 }

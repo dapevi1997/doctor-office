@@ -3,13 +3,13 @@ package co.com.sofka.model.patient;
 
 import co.com.sofka.model.patient.events.*;
 import co.com.sofka.model.patient.generic.EventChange;
-import co.com.sofka.model.patient.values.Identity;
+import co.com.sofka.model.patient.values.PersonalData;
 
 public class PatientChange extends EventChange {
 
     public PatientChange(Patient patient) {
         apply((PatientAdded event) -> {
-            patient.identity = new Identity(event.getIdentity());
+            patient.personalData = new PersonalData(event.getIdentity());
 
         });
         apply((IdentityUpdated event) -> {

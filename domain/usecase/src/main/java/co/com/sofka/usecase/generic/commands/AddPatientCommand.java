@@ -1,41 +1,61 @@
 package co.com.sofka.usecase.generic.commands;
 
+import co.com.sofka.model.patient.values.*;
 import co.com.sofka.usecase.generic.Command;
 
 public class AddPatientCommand extends Command {
-    private String patientId;
-    private String identity;
-    private String clinicHistory;
+    private PatientId patientId;
+    private PersonalData personalData;
+    private ClinicHistory clinicHistory;
+    private ReviewId reviewId;
+
+    private Annotation annotation;
+
+
+
     public AddPatientCommand() {
     }
 
-    public AddPatientCommand(String patientId, String identity, String clinicHistory) {
+    public AddPatientCommand(PatientId patientId, PersonalData personalData,
+                             ClinicHistory clinicHistory, ReviewId reviewId, Annotation annotation) {
         this.patientId = patientId;
-        this.identity = identity;
+        this.personalData = personalData;
         this.clinicHistory = clinicHistory;
+        this.reviewId = reviewId;
+        this.annotation = annotation;
     }
 
-    public String getPatientId() {
+    public PatientId getPatientId() {
         return patientId;
     }
 
-    public void setId(String id) {
-        this.patientId = id;
+
+
+    public PersonalData getPersonalData() {
+        return personalData;
     }
 
-    public String getIdentity() {
-        return identity;
+    public void setIdentity(PersonalData personalData) {
+        this.personalData = personalData;
     }
 
-    public void setIdentity(String identity) {
-        this.identity = identity;
-    }
-
-    public String getClinicHistory() {
+    public ClinicHistory getClinicHistory() {
         return clinicHistory;
     }
 
-    public void setClinicHistory(String clinicHistory) {
+    public void setClinicHistory(ClinicHistory clinicHistory) {
         this.clinicHistory = clinicHistory;
     }
+
+    public ReviewId getReviewId() {
+        return reviewId;
+    }
+
+    public Annotation getAnnotation() {
+        return annotation;
+    }
 }
+
+
+
+

@@ -1,13 +1,13 @@
 package co.com.sofka.model.patient;
 
 
+import co.com.sofka.model.patient.entities.Review;
 import co.com.sofka.model.patient.events.*;
-import co.com.sofka.model.week.events.WeekStateConsulted;
 import co.com.sofka.model.patient.generic.AggregateRoot;
 import co.com.sofka.model.patient.generic.DomainEvent;
 import co.com.sofka.model.patient.values.ClinicHistory;
 import co.com.sofka.model.patient.values.PatientId;
-import co.com.sofka.model.patient.values.Identity;
+import co.com.sofka.model.patient.values.PersonalData;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,6 +15,7 @@ import lombok.Setter;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -23,16 +24,14 @@ import java.util.Objects;
 //@Builder(toBuilder = true)
 public class Patient  extends AggregateRoot<PatientId> {
 
-    //protected List<Review> reviews;
-    protected Identity identity;
+    protected Set<Review> reviews;
+    protected PersonalData personalData;
     protected ClinicHistory clinicHistory;
 
-    public Patient(PatientId patientId, /*List<Review> reviews,*/ Identity identity, ClinicHistory clinicHistory){
+    public Patient(PatientId patientId, Set<Review> reviews, PersonalData personalData, ClinicHistory clinicHistory){
         super(patientId);
-        this.identity = identity;
-        this.clinicHistory = clinicHistory;
         subscribe(new PatientChange(this));
-        appendChange(new PatientAdded(patientId.value(), identity.value(), clinicHistory.value())).apply();
+        appendChange(new PatientAdded(patientId.value(), personalData.value(), clinicHistory.value())).apply();
     }
 
     private Patient(PatientId patientId){
@@ -47,18 +46,18 @@ public class Patient  extends AggregateRoot<PatientId> {
 
     }
 
-    public void addPatient(PatientId patientId, Identity identity, ClinicHistory clinicHistory){
+    public void addPatient(PatientId patientId, PersonalData personalData, ClinicHistory clinicHistory){
         Objects.requireNonNull(patientId);
-        Objects.requireNonNull(identity);
+        Objects.requireNonNull(personalData);
         Objects.requireNonNull(clinicHistory);
-        appendChange(new PatientAdded(patientId.value(), identity.value(), clinicHistory.value()));
+        appendChange(new PatientAdded(patientId.value(), personalData.value(), clinicHistory.value()));
 
     }
 
-    public void updateIdentity(PatientId patientId, Identity identity){
+    public void updateIdentity(PatientId patientId, PersonalData personalData){
         Objects.requireNonNull(patientId);
-        Objects.requireNonNull(identity);
-        appendChange(new IdentityUpdated(patientId.value(), identity.value()));
+        Objects.requireNonNull(personalData);
+        appendChange(new IdentityUpdated(patientId.value(), personalData.value()));
 
     }
     public void addReview(){
@@ -86,7 +85,7 @@ public class Patient  extends AggregateRoot<PatientId> {
     @Override
     public String toString() {
         return "Patient{" +
-                "identity=" + identity +
+                "identity=" + personalData +
                 ", clinicHistory=" + clinicHistory +
                 '}';
     }

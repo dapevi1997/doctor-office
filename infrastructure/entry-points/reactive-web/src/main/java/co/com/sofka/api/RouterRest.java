@@ -18,10 +18,11 @@ public class RouterRest {
     @Bean
     public RouterFunction<ServerResponse> addPatient(AddPatientUseCase addPatientUseCase) {
         return route(
-                POST("/api/create/post").and(accept(MediaType.APPLICATION_JSON)), request -> ServerResponse.ok()
+                POST("/api/create/patient").and(accept(MediaType.APPLICATION_JSON)), request -> ServerResponse.ok()
                         .contentType(MediaType.APPLICATION_JSON)
                         .body(BodyInserters.fromPublisher(addPatientUseCase.apply(
-                                request.bodyToMono(AddPatientCommand.class)
+                                request
+                                        .bodyToMono(AddPatientCommand.class)
                         ), DomainEvent.class)));
 
     }

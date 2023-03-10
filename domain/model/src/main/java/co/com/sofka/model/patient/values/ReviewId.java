@@ -4,8 +4,8 @@ package co.com.sofka.model.patient.values;
 import co.com.sofka.model.patient.generic.Identity;
 
 public class ReviewId extends Identity {
-    public ReviewId() {
-    }
+  /*  public ReviewId() {
+    }*/
 
     private ReviewId(String uuid) {
         super(uuid);

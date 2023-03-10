@@ -3,8 +3,6 @@ package co.com.sofka.usecase.addpatientevent;
 import co.com.sofka.model.patient.Patient;
 import co.com.sofka.model.patient.events.PatientAdded;
 import co.com.sofka.model.patient.generic.DomainEvent;
-import co.com.sofka.model.patient.values.ClinicHistory;
-import co.com.sofka.model.patient.values.Identity;
 import co.com.sofka.model.patient.values.PatientId;
 import co.com.sofka.usecase.generic.gateways.DomainEventRepository;
 import co.com.sofka.usecase.generic.gateways.EventBus;
@@ -26,6 +24,7 @@ public class AddPatientEventUseCase implements Function<Mono<PatientAdded>, Flux
     public Flux<DomainEvent> apply(Mono<PatientAdded> patientAddedMono) {
         return patientAddedMono.flatMapIterable(event -> {
                     Patient patient = Patient.from(PatientId.of(event.aggregateRootId()), List.of(event));
+                    repository.savePatient(patient);
                    /* patient.addPatient(PatientId.of(event.getId()),
                             new Identity(event.getIdentity()),
                             new ClinicHistory(event.getClinicHistory()));*/
