@@ -9,6 +9,9 @@ import co.com.sofka.model.week.events.WeekStateConsulted;
 public class WeekChange extends EventChange {
     public WeekChange(Week week) {
         apply((WeekAdded event)->{
+             String information = event.getInformation();
+
+
 
         });
         apply((CitationAdded event) ->{

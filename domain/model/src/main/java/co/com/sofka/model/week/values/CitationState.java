@@ -11,7 +11,7 @@ public class CitationState implements ValueObject<String> {
 
     @Override
     public String value() {
-        return null;
+        return citationState;
     }
 
     public String getCitationState() {

@@ -11,7 +11,7 @@ public class Date implements ValueObject<String> {
 
     @Override
     public String value() {
-        return null;
+        return date;
     }
 
     public String getDate() {

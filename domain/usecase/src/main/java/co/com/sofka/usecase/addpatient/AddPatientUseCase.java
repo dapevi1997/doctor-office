@@ -37,7 +37,7 @@ public class AddPatientUseCase extends UseCaseForCommand<AddPatientCommand> {
 
 
             Patient patient = new Patient(patientId,reviewId,annotation,personalData,clinicHistory);
-            repository.savePatient(patient);
+
 
             return patient.getUncommittedChanges();
         }).flatMap(event -> {
