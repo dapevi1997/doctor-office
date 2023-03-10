@@ -7,14 +7,19 @@ public class PatientAdded extends DomainEvent {
     private String identity;
     private String clinicHistory;
 
+    private String reviewId;
+    private String annotation;
+
     public PatientAdded() {
         super("perez.daniel.patientadded");
     }
-    public PatientAdded(String id, String identity, String clinicHistory){
+    public PatientAdded(String id, String reviewId, String annotation,String identity, String clinicHistory){
         super("perez.daniel.patientadded");
         this.id = id;
         this.identity = identity;
         this.clinicHistory = clinicHistory;
+        this.reviewId = reviewId;
+        this.annotation = annotation;
 
     }
 
@@ -28,5 +33,13 @@ public class PatientAdded extends DomainEvent {
 
     public String getClinicHistory() {
         return clinicHistory;
+    }
+
+    public String getReviewId() {
+        return reviewId;
+    }
+
+    public String getAnnotation() {
+        return annotation;
     }
 }

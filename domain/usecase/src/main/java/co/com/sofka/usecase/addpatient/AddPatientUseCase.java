@@ -28,22 +28,15 @@ public class AddPatientUseCase extends UseCaseForCommand<AddPatientCommand> {
     @Override
     public Flux<DomainEvent> apply(Mono<AddPatientCommand> addPatientCommandMono) {
         return addPatientCommandMono.flatMapIterable(command->{
-
-            ClinicHistory clinicHistory = new ClinicHistory(command.getClinicHistory().value());
             PatientId patientId = PatientId.of(command.getPatientId().value());
+            ReviewId reviewId = ReviewId.of(command.getReviewId().value());
+            Annotation annotation = new Annotation(command.getAnnotation().value());
+            ClinicHistory clinicHistory = new ClinicHistory(command.getClinicHistory().value());
             PersonalData personalData = new PersonalData(command.getPersonalData().value());
 
 
 
-
-            Annotation annotation = new Annotation("anotation");
-
-            Review review = new Review(ReviewId.of("idreviw"),PatientId.of("patienId"),annotation);
-
-            Set<Review> reviews = new HashSet<>();
-            reviews.add(review);
-
-            Patient patient = new Patient(patientId, reviews ,personalData,clinicHistory);
+            Patient patient = new Patient(patientId,reviewId,annotation,personalData,clinicHistory);
             repository.savePatient(patient);
 
             return patient.getUncommittedChanges();

@@ -9,7 +9,6 @@ public class ClinicHistory implements ValueObject<String> {
     }
 
     public ClinicHistory(String clinicHistory) {
-        this();
         this.clinicHistory = clinicHistory;
     }
 

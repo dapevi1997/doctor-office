@@ -5,9 +5,7 @@ import co.com.sofka.model.patient.entities.Review;
 import co.com.sofka.model.patient.events.*;
 import co.com.sofka.model.patient.generic.AggregateRoot;
 import co.com.sofka.model.patient.generic.DomainEvent;
-import co.com.sofka.model.patient.values.ClinicHistory;
-import co.com.sofka.model.patient.values.PatientId;
-import co.com.sofka.model.patient.values.PersonalData;
+import co.com.sofka.model.patient.values.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,10 +26,10 @@ public class Patient  extends AggregateRoot<PatientId> {
     protected PersonalData personalData;
     protected ClinicHistory clinicHistory;
 
-    public Patient(PatientId patientId, Set<Review> reviews, PersonalData personalData, ClinicHistory clinicHistory){
+    public Patient(PatientId patientId, ReviewId reviewId, Annotation annotation, PersonalData personalData, ClinicHistory clinicHistory){
         super(patientId);
         subscribe(new PatientChange(this));
-        appendChange(new PatientAdded(patientId.value(), personalData.value(), clinicHistory.value())).apply();
+        appendChange(new PatientAdded(patientId.value(), reviewId.value(), annotation.value(), personalData.value(), clinicHistory.value())).apply();
     }
 
     private Patient(PatientId patientId){
@@ -46,11 +44,11 @@ public class Patient  extends AggregateRoot<PatientId> {
 
     }
 
-    public void addPatient(PatientId patientId, PersonalData personalData, ClinicHistory clinicHistory){
+    public void addPatient(PatientId patientId, ReviewId reviewId, Annotation annotation, PersonalData personalData, ClinicHistory clinicHistory){
         Objects.requireNonNull(patientId);
         Objects.requireNonNull(personalData);
         Objects.requireNonNull(clinicHistory);
-        appendChange(new PatientAdded(patientId.value(), personalData.value(), clinicHistory.value()));
+        appendChange(new PatientAdded(patientId.value(), reviewId.value(), annotation.value(), personalData.value(), clinicHistory.value()));
 
     }
 
@@ -60,9 +58,9 @@ public class Patient  extends AggregateRoot<PatientId> {
         appendChange(new IdentityUpdated(patientId.value(), personalData.value()));
 
     }
-    public void addReview(){
+    public void addReview(PatientId patientId, ReviewId reviewId, Annotation annotation){
 
-        appendChange(new ReviewAdded());
+        appendChange(new ReviewAdded(patientId.value(), reviewId.value(), annotation.value()));
 
     }
 
