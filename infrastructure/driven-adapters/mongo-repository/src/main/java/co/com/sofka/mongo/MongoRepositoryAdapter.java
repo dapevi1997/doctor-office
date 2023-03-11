@@ -1,8 +1,6 @@
 package co.com.sofka.mongo;
 
-import co.com.sofka.model.patient.Patient;
 import co.com.sofka.model.patient.generic.DomainEvent;
-import co.com.sofka.model.week.utils.PatientExits;
 import co.com.sofka.mongo.data.StoredEvent;
 import co.com.sofka.serializer.JSONMapper;
 import co.com.sofka.usecase.generic.gateways.DomainEventRepository;
@@ -15,12 +13,14 @@ import org.springframework.data.mongodb.core.query.Criteria;
 
 import java.util.Comparator;
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Repository
 public class MongoRepositoryAdapter implements DomainEventRepository
 {
     private final ReactiveMongoTemplate template;
     private final JSONMapper eventSerializer;
+    private Object Boolean;
 
     public MongoRepositoryAdapter(ReactiveMongoTemplate template, JSONMapper eventSerializer) {
         this.template = template;
@@ -48,10 +48,12 @@ public class MongoRepositoryAdapter implements DomainEventRepository
 
     @Override
     public Mono<Boolean> exist(String aggregateId) {
+        AtomicReference<Boolean> flag;
         var query = new Query(Criteria.where("aggregateRootId").is(aggregateId).and("typeName").is("co.com.sofka.model.patient.events.PatientAdded"));
-        Mono<Boolean> event = template.findOne(query, StoredEvent.class)
-                .map(storeEvent -> Boolean.TRUE)
-                .switchIfEmpty(Mono.just(Boolean.FALSE));
-        return event;
+        return template.findOne(query, StoredEvent.class)
+                .map(storeEvent -> true)
+                .switchIfEmpty(Mono.just(false));
+
+
     }
 }

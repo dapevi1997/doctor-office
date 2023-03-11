@@ -1,12 +1,8 @@
 package co.com.sofka.usecase.addcitation;
 
-import co.com.sofka.model.patient.Patient;
 import co.com.sofka.model.patient.generic.DomainEvent;
-import co.com.sofka.model.patient.values.Annotation;
 import co.com.sofka.model.patient.values.PatientId;
-import co.com.sofka.model.patient.values.ReviewId;
 import co.com.sofka.model.week.Week;
-import co.com.sofka.model.week.events.CitationAdded;
 import co.com.sofka.model.week.utils.PatientExits;
 import co.com.sofka.model.week.values.CitationId;
 import co.com.sofka.model.week.values.CitationState;
@@ -16,11 +12,11 @@ import co.com.sofka.usecase.generic.UseCaseForCommand;
 import co.com.sofka.usecase.generic.commands.AddCitationCommand;
 import co.com.sofka.usecase.generic.gateways.DomainEventRepository;
 import co.com.sofka.usecase.generic.gateways.EventBus;
-import org.reactivestreams.Publisher;
+import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.function.Function;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class AddCitationUseCase extends UseCaseForCommand<AddCitationCommand> {
     private final DomainEventRepository repository;
@@ -36,13 +32,10 @@ public class AddCitationUseCase extends UseCaseForCommand<AddCitationCommand> {
     @Override
     public Flux<DomainEvent> apply(Mono<AddCitationCommand> addCitationCommandMono) {
 
-        addCitationCommandMono.flatMapMany(command-> {
-           // Boolean exist = repository.exist(command.getPatientId()).block();
-            return Flux.just(new PatientExits(true));
 
-        });
 
-/*        return addCitationCommandMono.flatMapMany(command -> {
+
+        return addCitationCommandMono.flatMapMany(command -> {
                     return repository.findById(command.getWeekId())
                             .collectList()
                             .flatMapIterable(events -> {
@@ -54,7 +47,17 @@ public class AddCitationUseCase extends UseCaseForCommand<AddCitationCommand> {
                                 bus.publish(event);
                                 return event;
                             }).flatMap(event -> {
-                                return repository.saveEvent(event);
+                                Mono<Boolean> exits = repository.exist(command.getPatientId());
+                                Disposable subscribe = exits.subscribe(data -> {
+                                    if (data.equals(true)){
+                                         repository.saveEvent(event);
+                                    }
+                                });
+                                subscribe.dispose();
+
+
+
+                                return Mono.just(new PatientExits(false));
                             });
                 }
 
@@ -63,8 +66,8 @@ public class AddCitationUseCase extends UseCaseForCommand<AddCitationCommand> {
                 //return Mono.just(new PatientExits(true));
 
 
-        );*/
-        return Flux.just(new PatientExits(true));
+        );
+
 
     }
 }
