@@ -9,5 +9,7 @@ public interface DomainEventRepository {
     Flux<DomainEvent> findById(String aggregateId);
     Mono<DomainEvent> saveEvent(DomainEvent event);
 
-    Mono<Boolean> exist(String aggregateId);
+    Mono<Boolean> exists(String aggregateId);
+
+    //Mono<Boolean> exist(String aggregateId);
 }

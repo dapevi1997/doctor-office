@@ -16,6 +16,7 @@ import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class AddCitationUseCase extends UseCaseForCommand<AddCitationCommand> {
@@ -28,14 +29,44 @@ public class AddCitationUseCase extends UseCaseForCommand<AddCitationCommand> {
     }
 
 
-
     @Override
     public Flux<DomainEvent> apply(Mono<AddCitationCommand> addCitationCommandMono) {
 
-
-
-
         return addCitationCommandMono.flatMapMany(command -> {
+            return repository.exists(command.getPatientId())
+                    .flatMapMany(aBoolean -> {
+                        if (aBoolean == true) {
+                            //return new PatientExits(aBoolean);
+
+                            return  repository.findById(command.getWeekId()).collectList()
+                                    .flatMapIterable(
+                                    domainEvent -> {
+                                        Week week = Week.from(WeekId.of(command.getWeekId()), domainEvent);
+                                        week.addCitation(CitationId.of(command.getCitaId()), new Infomation(command.getInformation()),
+                                                new CitationState(command.getCitationState()), PatientId.of(command.getPatientId()), WeekId.of(command.getWeekId()));
+                                        return week.getUncommittedChanges();
+                                    }
+                            ).map(domainEvent -> {
+                                bus.publish(domainEvent);
+                                return domainEvent;
+                                    })
+                                    .flatMap(domainEvent -> {
+                                        return repository.saveEvent(domainEvent);
+                                    });
+
+
+                        }
+
+                        Flux<DomainEvent> byId = repository.findById(command.getWeekId());
+                        return byId;
+                    });
+        });
+
+
+
+
+
+/*        return addCitationCommandMono.flatMapMany(command -> {
                     return repository.findById(command.getWeekId())
                             .collectList()
                             .flatMapIterable(events -> {
@@ -61,11 +92,10 @@ public class AddCitationUseCase extends UseCaseForCommand<AddCitationCommand> {
                 }
 
 
-                //exist.subscribe(data-> System.out.println(data));
-                //return Mono.just(new PatientExits(true));
 
 
-        );
+
+        );*/
 
 
     }

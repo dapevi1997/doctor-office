@@ -12,5 +12,6 @@ public class PatientExits extends DomainEvent {
     public PatientExits( Boolean exists) {
         super("type");
         this.exists = exists;
+        setAggregateName(exists.toString());
     }
 }

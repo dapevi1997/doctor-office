@@ -47,6 +47,12 @@ public class MongoRepositoryAdapter implements DomainEventRepository
     }
 
     @Override
+    public Mono<java.lang.Boolean> exists(String aggregateId) {
+        var query = new Query(Criteria.where("aggregateRootId").is(aggregateId));
+        return template.exists(query, StoredEvent.class);
+    }
+
+    /*    @Override
     public Mono<Boolean> exist(String aggregateId) {
         AtomicReference<Boolean> flag;
         var query = new Query(Criteria.where("aggregateRootId").is(aggregateId).and("typeName").is("co.com.sofka.model.patient.events.PatientAdded"));
@@ -55,5 +61,5 @@ public class MongoRepositoryAdapter implements DomainEventRepository
                 .switchIfEmpty(Mono.just(false));
 
 
-    }
+    }*/
 }
