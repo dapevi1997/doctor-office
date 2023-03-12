@@ -9,6 +9,8 @@ import co.com.sofka.model.patient.values.PatientId;
 import co.com.sofka.model.patient.values.PersonalData;
 import co.com.sofka.model.patient.values.ReviewId;
 
+import java.util.HashSet;
+
 public class PatientChange extends EventChange {
 
     public PatientChange(Patient patient) {
@@ -22,7 +24,8 @@ public class PatientChange extends EventChange {
         });
         apply((ReviewAdded event) -> {
             Review review = new Review(PatientId.of(event.getPatientId()),ReviewId.of(event.getIdReview()),  new Annotation(event.getAnnotation()));
-           // patient.reviews.add(review);
+            patient.reviews = new HashSet<>();
+            patient.reviews.add(review);
 
 
         });

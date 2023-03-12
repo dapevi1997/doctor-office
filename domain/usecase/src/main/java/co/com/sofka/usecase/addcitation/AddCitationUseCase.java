@@ -53,7 +53,6 @@ public class AddCitationUseCase extends UseCaseForCommand<AddCitationCommand> {
                                          repository.saveEvent(event);
                                     }
                                 });
-                                subscribe.dispose();
 
 
 
