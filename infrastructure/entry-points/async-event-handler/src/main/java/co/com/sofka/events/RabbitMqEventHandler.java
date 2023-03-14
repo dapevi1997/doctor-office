@@ -1,15 +1,24 @@
 package co.com.sofka.events;
 
 import co.com.sofka.events.data.Notification;
-import co.com.sofka.model.patient.events.PatientAdded;
+import co.com.sofka.model.patient.Patient;
+import co.com.sofka.model.patient.generic.DomainEvent;
+import co.com.sofka.model.patient.values.PatientId;
+import co.com.sofka.model.patient.values.PersonalData;
+import co.com.sofka.model.week.events.CitationAdded;
 import co.com.sofka.serializer.JSONMapper;
 import co.com.sofka.serializer.JSONMapperImpl;
-import co.com.sofka.usecase.addpatient.AddPatientUseCase;
 import co.com.sofka.usecase.addpatientevent.AddPatientEventUseCase;
+import co.com.sofka.usecase.generic.gateways.DomainEventRepository;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
+
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
 @Component
@@ -19,24 +28,57 @@ public class RabbitMqEventHandler {
     private final Logger logger = Logger.getLogger("RabbitMqEventHandler");
     private final JSONMapper mapper = new JSONMapperImpl();
 
+    private final JavaMailSender javaMailSender;
+    private final DomainEventRepository repository;
+
     private final AddPatientEventUseCase addPatientUseCase;
 
-    public RabbitMqEventHandler(AddPatientEventUseCase addPatientEventUseCase) {
+    public RabbitMqEventHandler(JavaMailSender javaMailSender, DomainEventRepository repository, AddPatientEventUseCase addPatientEventUseCase) {
+        this.javaMailSender = javaMailSender;
+        this.repository = repository;
+
         this.addPatientUseCase = addPatientEventUseCase;
     }
 
     @RabbitListener(queues = EVENTS_QUEUE)
     public void listener(String message) throws ClassNotFoundException {
+        AtomicReference<PersonalData> personalData = new AtomicReference<>();
         Notification notification = Notification.from(message);
-        if(notification.getType()
-                .equals("co.com.sofka.model.post.events.PatientAdded")){
+        if (notification.getType()
+                .equals("co.com.sofka.model.week.events.CitationAdded")) {
+            CitationAdded citationAdded = (CitationAdded) mapper.readFromJson(notification.getBody(), CitationAdded.class);
             logger.info("1: " + notification.toString());
-            this.addPatientUseCase.apply(Mono
-                            .just((PatientAdded) mapper.readFromJson(notification.getBody(),
-                                    PatientAdded.class)))
-                    .subscribe();
-        }else{
-            logger.info("1: " + "we currently don't have a listener for that event " +notification.toString());
+            repository.findById(citationAdded.getPatientId())
+                    .collectList().subscribe(events -> {
+                                Patient patient = Patient.from(PatientId.of(citationAdded.getPatientId()), events);
+                                SimpleMailMessage email = new SimpleMailMessage();
+                                email.setTo(patient.getPersonalData().getPersonalData());
+                                email.setFrom("danielperezvitola@gmail.com");
+                                email.setSubject("CITA AGENDADA");
+                                email.setText("Se ha agendado la cita correctamente");
+
+                                javaMailSender.send(email);
+
+                                logger.info("1: Email enviado con éxito" );
+                                //System.out.println(patient.getPersonalData().getPersonalData());
+                            }
+
+                    );
+    /*                .flatMapIterable(events -> {
+                        Patient patient = Patient.from(PatientId.of(citationAdded.getPatientId()), events);
+                        personalData.set(patient.getPersonalData());
+                        return patient.getUncommittedChanges();
+
+                    }).subscribe(
+                            data->{
+                                System.out.println(data);
+                                System.out.println(personalData.get().getPersonalData());
+                            }
+                     );*/
+
+
+        } else {
+            logger.info("1: " + "we currently don't have a listener for that event " + notification.toString());
         }
     }
 

@@ -41,4 +41,15 @@ public class CitationAdded extends DomainEvent {
     public String getWeekId() {
         return weekId;
     }
+
+    @Override
+    public String toString() {
+        return "CitationAdded{" +
+                "id='" + id + '\'' +
+                ", information='" + information + '\'' +
+                ", citationState='" + citationState + '\'' +
+                ", patientId='" + patientId + '\'' +
+                ", weekId='" + weekId + '\'' +
+                '}';
+    }
 }

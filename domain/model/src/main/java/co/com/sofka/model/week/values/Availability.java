@@ -17,4 +17,11 @@ public class Availability implements ValueObject<String> {
     public String getAvailability() {
         return availability;
     }
+
+    @Override
+    public String toString() {
+        return "Availability{" +
+                "availability='" + availability + '\'' +
+                '}';
+    }
 }

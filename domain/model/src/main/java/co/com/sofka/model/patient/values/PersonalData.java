@@ -22,8 +22,8 @@ public class PersonalData implements ValueObject<String> {
 
     @Override
     public String toString() {
-        return "Identity{" +
-                "identity='" + personalData + '\'' +
+        return "PersonalData{" +
+                "personalData='" + personalData + '\'' +
                 '}';
     }
 }

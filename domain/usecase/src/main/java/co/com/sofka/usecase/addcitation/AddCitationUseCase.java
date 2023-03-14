@@ -3,20 +3,16 @@ package co.com.sofka.usecase.addcitation;
 import co.com.sofka.model.patient.generic.DomainEvent;
 import co.com.sofka.model.patient.values.PatientId;
 import co.com.sofka.model.week.Week;
-import co.com.sofka.model.week.utils.PatientExits;
-import co.com.sofka.model.week.values.CitationId;
-import co.com.sofka.model.week.values.CitationState;
-import co.com.sofka.model.week.values.Infomation;
-import co.com.sofka.model.week.values.WeekId;
+import co.com.sofka.model.week.events.CitationAdded;
+import co.com.sofka.model.week.utils.WeekAvailabilityMapper;
+import co.com.sofka.model.week.values.*;
 import co.com.sofka.usecase.generic.UseCaseForCommand;
 import co.com.sofka.usecase.generic.commands.AddCitationCommand;
 import co.com.sofka.usecase.generic.gateways.DomainEventRepository;
 import co.com.sofka.usecase.generic.gateways.EventBus;
-import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class AddCitationUseCase extends UseCaseForCommand<AddCitationCommand> {
@@ -31,6 +27,7 @@ public class AddCitationUseCase extends UseCaseForCommand<AddCitationCommand> {
 
     @Override
     public Flux<DomainEvent> apply(Mono<AddCitationCommand> addCitationCommandMono) {
+        AtomicReference<Availability> availabilityAtomicReference = new AtomicReference<>();
 
         return addCitationCommandMono.flatMapMany(command -> {
             return repository.exists(command.getPatientId())
@@ -38,19 +35,26 @@ public class AddCitationUseCase extends UseCaseForCommand<AddCitationCommand> {
                         if (aBoolean == true) {
                             //return new PatientExits(aBoolean);
 
-                            return  repository.findById(command.getWeekId()).collectList()
+                            return repository.findById(command.getWeekId()).collectList()
                                     .flatMapIterable(
-                                    domainEvent -> {
-                                        Week week = Week.from(WeekId.of(command.getWeekId()), domainEvent);
-                                        week.addCitation(CitationId.of(command.getCitaId()), new Infomation(command.getInformation()),
-                                                new CitationState(command.getCitationState()), PatientId.of(command.getPatientId()), WeekId.of(command.getWeekId()));
-                                        return week.getUncommittedChanges();
-                                    }
-                            ).map(domainEvent -> {
-                                bus.publish(domainEvent);
-                                return domainEvent;
+                                            domainEvent -> {
+                                                Week week = Week.from(WeekId.of(command.getWeekId()), domainEvent);
+                                                availabilityAtomicReference.set(week.getAvailability());
+
+                                                week.addCitation(CitationId.of(command.getCitaId()), new Infomation(command.getInformation()),
+                                                        new CitationState(command.getCitationState()), PatientId.of(command.getPatientId()), WeekId.of(command.getWeekId()));
+                                                return week.getUncommittedChanges();
+                                            }
+                                    ).map(domainEvent -> {
+                                        bus.publish(domainEvent);
+                                        return domainEvent;
                                     })
                                     .flatMap(domainEvent -> {
+
+                                        CitationAdded citationAdded = (CitationAdded)domainEvent;
+                                        WeekAvailabilityMapper weekAvailabilityMapper = new WeekAvailabilityMapper(availabilityAtomicReference.get().getAvailability());
+                                        //weekAvailabilityMapper.getSchedule().forEach(stringStringMap -> System.out.println(stringStringMap));
+                                        citationAdded.getInformation();
                                         return repository.saveEvent(domainEvent);
                                     });
 

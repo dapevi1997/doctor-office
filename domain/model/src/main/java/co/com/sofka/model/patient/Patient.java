@@ -78,13 +78,11 @@ public class Patient  extends AggregateRoot<PatientId> {
     }
 
 
-
-
-
     @Override
     public String toString() {
         return "Patient{" +
-                "identity=" + personalData +
+                "reviews=" + reviews +
+                ", personalData=" + personalData +
                 ", clinicHistory=" + clinicHistory +
                 '}';
     }

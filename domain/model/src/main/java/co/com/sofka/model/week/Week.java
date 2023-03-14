@@ -17,13 +17,15 @@ import java.util.Objects;
 import java.util.Set;
 
 public class Week extends AggregateRoot<WeekId> {
-    private Set<Citation> citations;
-    private Availability availability;
-    private State state;
-    private Date date;
+    protected Set<Citation> citations;
+    protected Availability availability;
+    protected State state;
+    protected Date date;
+
+
 
     public Week(WeekId weekId, CitationId citationId, Infomation infomation, CitationState citationState,
-                PatientId patientId,Availability availability, State state, Date date) {
+                PatientId patientId, Availability availability, State state, Date date) {
         super(weekId);
 
         subscribe(new WeekChange(this));

@@ -7,4 +7,6 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-amqp', version: '3.0.3'
     implementation 'org.springframework:spring-context'
    // implementation 'io.micrometer:micrometer-core'
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '3.0.4'
 }
