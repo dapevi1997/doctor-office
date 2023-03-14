@@ -2,7 +2,6 @@ package co.com.sofka.events;
 
 import co.com.sofka.events.data.Notification;
 import co.com.sofka.model.patient.Patient;
-import co.com.sofka.model.patient.generic.DomainEvent;
 import co.com.sofka.model.patient.values.PatientId;
 import co.com.sofka.model.patient.values.PersonalData;
 import co.com.sofka.model.week.events.CitationAdded;
@@ -14,10 +13,8 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Mono;
 
 
-import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
@@ -64,17 +61,7 @@ public class RabbitMqEventHandler {
                             }
 
                     );
-    /*                .flatMapIterable(events -> {
-                        Patient patient = Patient.from(PatientId.of(citationAdded.getPatientId()), events);
-                        personalData.set(patient.getPersonalData());
-                        return patient.getUncommittedChanges();
 
-                    }).subscribe(
-                            data->{
-                                System.out.println(data);
-                                System.out.println(personalData.get().getPersonalData());
-                            }
-                     );*/
 
 
         } else {

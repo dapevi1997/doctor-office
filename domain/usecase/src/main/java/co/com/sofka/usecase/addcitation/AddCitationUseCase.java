@@ -4,7 +4,6 @@ import co.com.sofka.model.patient.generic.DomainEvent;
 import co.com.sofka.model.patient.values.PatientId;
 import co.com.sofka.model.week.Week;
 import co.com.sofka.model.week.events.CitationAdded;
-import co.com.sofka.model.week.utils.WeekAvailabilityMapper;
 import co.com.sofka.model.week.values.*;
 import co.com.sofka.usecase.generic.UseCaseForCommand;
 import co.com.sofka.usecase.generic.commands.AddCitationCommand;
@@ -52,7 +51,7 @@ public class AddCitationUseCase extends UseCaseForCommand<AddCitationCommand> {
                                     .flatMap(domainEvent -> {
 
                                         CitationAdded citationAdded = (CitationAdded)domainEvent;
-                                        WeekAvailabilityMapper weekAvailabilityMapper = new WeekAvailabilityMapper(availabilityAtomicReference.get().getAvailability());
+                                        //MapperUtils mapperUtils = new MapperUtils(availabilityAtomicReference.get().getAvailability());
                                         //weekAvailabilityMapper.getSchedule().forEach(stringStringMap -> System.out.println(stringStringMap));
                                         citationAdded.getInformation();
                                         return repository.saveEvent(domainEvent);

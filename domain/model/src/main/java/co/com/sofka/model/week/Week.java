@@ -30,7 +30,7 @@ public class Week extends AggregateRoot<WeekId> {
 
         subscribe(new WeekChange(this));
         appendChange(new WeekAdded(weekId.value(), citationId.value(), infomation.value(),citationState.value()
-                , patientId.value(), availability.value(), state.value(),date.value())).apply();
+                , patientId.value(), availability.getAvailability().toString(), state.value(),date.value())).apply();
     }
 
     private Week(WeekId weekId){

@@ -1,5 +1,6 @@
 package co.com.sofka.usecase.generic.commands;
 
+import co.com.sofka.model.week.values.Availability;
 import co.com.sofka.usecase.generic.Command;
 
 public class AddWeekCommand extends Command {

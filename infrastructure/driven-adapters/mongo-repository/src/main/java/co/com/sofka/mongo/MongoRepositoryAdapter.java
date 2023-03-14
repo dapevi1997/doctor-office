@@ -52,6 +52,14 @@ public class MongoRepositoryAdapter implements DomainEventRepository
         return template.exists(query, StoredEvent.class);
     }
 
+    @Override
+    public Flux<DomainEvent> findCitation(String weekId) {
+        var query = new Query(Criteria.where("aggregateRootId").is(weekId).and("typeName").is("co.com.sofka.model.week.events.CitationAdded"));
+        return template.find(query, StoredEvent.class)
+                .sort(Comparator.comparing(event -> event.getOccurredOn()))
+                .map(storeEvent -> storeEvent.deserializeEvent(eventSerializer));
+    }
+
     /*    @Override
     public Mono<Boolean> exist(String aggregateId) {
         AtomicReference<Boolean> flag;

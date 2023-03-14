@@ -6,6 +6,7 @@ import co.com.sofka.usecase.addpatient.AddPatientUseCase;
 import co.com.sofka.usecase.addreview.AddReviewUseCase;
 import co.com.sofka.usecase.addweek.AddWeekUseCase;
 import co.com.sofka.usecase.generic.commands.*;
+import co.com.sofka.usecase.getcitations.GetCitationUseCase;
 import co.com.sofka.usecase.updatepersonaldata.UpdatePersonalDataUseCase;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -75,6 +76,18 @@ public class RouterRest {
                         .body(BodyInserters.fromPublisher(addCitationUseCase.apply(
                                 request
                                         .bodyToMono(AddCitationCommand.class)
+                        ), DomainEvent.class)));
+
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> getCitations(GetCitationUseCase getCitationUseCase) {
+        return route(
+                GET("/api/get/citation").and(accept(MediaType.APPLICATION_JSON)), request -> ServerResponse.ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(BodyInserters.fromPublisher(getCitationUseCase.apply(
+                                request
+                                        .bodyToMono(GetCitationCommand.class)
                         ), DomainEvent.class)));
 
     }

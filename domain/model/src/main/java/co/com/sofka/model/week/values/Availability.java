@@ -2,26 +2,34 @@ package co.com.sofka.model.week.values;
 
 import co.com.sofka.model.patient.generic.ValueObject;
 
-public class Availability implements ValueObject<String> {
-    private String availability;
+import java.time.LocalDateTime;
+import java.util.Set;
 
-    public Availability(String availability) {
+public class Availability implements ValueObject<Set<LocalDateTime>> {
+    private Set<LocalDateTime> availability;
+
+    public Availability() {
+    }
+
+    public Availability(Set<LocalDateTime> availability) {
+
+
         this.availability = availability;
     }
 
     @Override
-    public String value() {
+    public Set<LocalDateTime> value() {
         return availability;
     }
 
-    public String getAvailability() {
+    public Set<LocalDateTime> getAvailability() {
         return availability;
     }
 
     @Override
     public String toString() {
         return "Availability{" +
-                "availability='" + availability + '\'' +
+                "availability=" + availability +
                 '}';
     }
 }

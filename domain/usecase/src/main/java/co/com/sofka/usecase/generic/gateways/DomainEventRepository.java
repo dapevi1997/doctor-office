@@ -11,5 +11,9 @@ public interface DomainEventRepository {
 
     Mono<Boolean> exists(String aggregateId);
 
+    Flux<DomainEvent> findCitation(String weekId);
+
+
+
     //Mono<Boolean> exist(String aggregateId);
 }
