@@ -33,10 +33,10 @@ public class AddPatientUseCase extends UseCaseForCommand<AddPatientCommand> {
             Annotation annotation = new Annotation(command.getAnnotation().value());
             ClinicHistory clinicHistory = new ClinicHistory(command.getClinicHistory().value());
             PersonalData personalData = new PersonalData(command.getPersonalData().value());
+            Available available = new Available(Boolean.valueOf(command.getAvailable()));
 
 
-
-            Patient patient = new Patient(patientId,reviewId,annotation,personalData,clinicHistory);
+            Patient patient = new Patient(patientId,reviewId,annotation,personalData,clinicHistory, available);
 
 
             return patient.getUncommittedChanges();

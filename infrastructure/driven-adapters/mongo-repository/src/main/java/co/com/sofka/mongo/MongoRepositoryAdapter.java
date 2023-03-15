@@ -60,6 +60,14 @@ public class MongoRepositoryAdapter implements DomainEventRepository
                 .map(storeEvent -> storeEvent.deserializeEvent(eventSerializer));
     }
 
+    @Override
+    public Flux<DomainEvent> findClinicHistory(String patientId) {
+        var query = new Query(Criteria.where("aggregateRootId").is(patientId).and("typeName").is("co.com.sofka.model.patient.events.ReviewAdded"));
+        return template.find(query, StoredEvent.class)
+                .sort(Comparator.comparing(event -> event.getOccurredOn()))
+                .map(storeEvent -> storeEvent.deserializeEvent(eventSerializer));
+    }
+
     /*    @Override
     public Mono<Boolean> exist(String aggregateId) {
         AtomicReference<Boolean> flag;

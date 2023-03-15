@@ -4,10 +4,7 @@ package co.com.sofka.model.patient;
 import co.com.sofka.model.patient.entities.Review;
 import co.com.sofka.model.patient.events.*;
 import co.com.sofka.model.patient.generic.EventChange;
-import co.com.sofka.model.patient.values.Annotation;
-import co.com.sofka.model.patient.values.PatientId;
-import co.com.sofka.model.patient.values.PersonalData;
-import co.com.sofka.model.patient.values.ReviewId;
+import co.com.sofka.model.patient.values.*;
 
 import java.util.HashSet;
 
@@ -15,10 +12,13 @@ public class PatientChange extends EventChange {
 
     public PatientChange(Patient patient) {
         apply((PatientAdded event) -> {
+            patient.clinicHistory = new ClinicHistory(event.getClinicHistory());
+            patient.available = new Available(Boolean.valueOf(event.getAvailable()));
             patient.personalData = new PersonalData(event.getIdentity());
 
         });
         apply((PersonalDataUpdated event) -> {
+            patient.personalData = new PersonalData(event.getPersonalData());
 
 
         });

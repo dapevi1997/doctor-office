@@ -26,10 +26,12 @@ public class Patient  extends AggregateRoot<PatientId> {
     protected PersonalData personalData;
     protected ClinicHistory clinicHistory;
 
-    public Patient(PatientId patientId, ReviewId reviewId, Annotation annotation, PersonalData personalData, ClinicHistory clinicHistory){
+    protected Available available;
+
+    public Patient(PatientId patientId, ReviewId reviewId, Annotation annotation, PersonalData personalData, ClinicHistory clinicHistory, Available available){
         super(patientId);
         subscribe(new PatientChange(this));
-        appendChange(new PatientAdded(patientId.value(), reviewId.value(), annotation.value(), personalData.value(), clinicHistory.value())).apply();
+        appendChange(new PatientAdded(patientId.value(), reviewId.value(), annotation.value(), personalData.value(), clinicHistory.value(), available.value().toString())).apply();
     }
 
     private Patient(PatientId patientId){
@@ -44,11 +46,11 @@ public class Patient  extends AggregateRoot<PatientId> {
 
     }
 
-    public void addPatient(PatientId patientId, ReviewId reviewId, Annotation annotation, PersonalData personalData, ClinicHistory clinicHistory){
+    public void addPatient(PatientId patientId, ReviewId reviewId, Annotation annotation, PersonalData personalData, ClinicHistory clinicHistory, Available available){
         Objects.requireNonNull(patientId);
         Objects.requireNonNull(personalData);
         Objects.requireNonNull(clinicHistory);
-        appendChange(new PatientAdded(patientId.value(), reviewId.value(), annotation.value(), personalData.value(), clinicHistory.value()));
+        appendChange(new PatientAdded(patientId.value(), reviewId.value(), annotation.value(), personalData.value(), clinicHistory.value(), available.value().toString()));
 
     }
 

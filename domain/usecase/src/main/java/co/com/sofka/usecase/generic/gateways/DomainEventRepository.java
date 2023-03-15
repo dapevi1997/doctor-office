@@ -13,6 +13,8 @@ public interface DomainEventRepository {
 
     Flux<DomainEvent> findCitation(String weekId);
 
+    Flux<DomainEvent> findClinicHistory(String weekId);
+
 
 
     //Mono<Boolean> exist(String aggregateId);

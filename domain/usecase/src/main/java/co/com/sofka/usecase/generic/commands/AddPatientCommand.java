@@ -9,6 +9,8 @@ public class AddPatientCommand extends Command {
     private ClinicHistory clinicHistory;
     private ReviewId reviewId;
 
+    private String available;
+
     private Annotation annotation;
 
 
@@ -17,12 +19,13 @@ public class AddPatientCommand extends Command {
     }
 
     public AddPatientCommand(PatientId patientId, PersonalData personalData,
-                             ClinicHistory clinicHistory, ReviewId reviewId, Annotation annotation) {
+                             ClinicHistory clinicHistory, ReviewId reviewId, Annotation annotation, String available) {
         this.patientId = patientId;
         this.personalData = personalData;
         this.clinicHistory = clinicHistory;
         this.reviewId = reviewId;
         this.annotation = annotation;
+        this.available = available;
     }
 
     public PatientId getPatientId() {
@@ -53,6 +56,10 @@ public class AddPatientCommand extends Command {
 
     public Annotation getAnnotation() {
         return annotation;
+    }
+
+    public String getAvailable() {
+        return available;
     }
 }
 
