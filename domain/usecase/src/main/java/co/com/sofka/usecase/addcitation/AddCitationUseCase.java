@@ -5,6 +5,7 @@ import co.com.sofka.model.patient.values.PatientId;
 import co.com.sofka.model.week.Week;
 import co.com.sofka.model.week.events.CitationAdded;
 import co.com.sofka.model.week.values.*;
+import co.com.sofka.usecase.addweek.MapperUtils;
 import co.com.sofka.usecase.generic.UseCaseForCommand;
 import co.com.sofka.usecase.generic.commands.AddCitationCommand;
 import co.com.sofka.usecase.generic.gateways.DomainEventRepository;
@@ -12,15 +13,20 @@ import co.com.sofka.usecase.generic.gateways.EventBus;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class AddCitationUseCase extends UseCaseForCommand<AddCitationCommand> {
     private final DomainEventRepository repository;
     private final EventBus bus;
 
+    private MapperUtils mapperUtils;
+
     public AddCitationUseCase(DomainEventRepository repository, EventBus bus) {
         this.repository = repository;
         this.bus = bus;
+        this.mapperUtils = new MapperUtils();
     }
 
 
@@ -50,11 +56,21 @@ public class AddCitationUseCase extends UseCaseForCommand<AddCitationCommand> {
                                     })
                                     .flatMap(domainEvent -> {
 
-                                        CitationAdded citationAdded = (CitationAdded)domainEvent;
-                                        //MapperUtils mapperUtils = new MapperUtils(availabilityAtomicReference.get().getAvailability());
-                                        //weekAvailabilityMapper.getSchedule().forEach(stringStringMap -> System.out.println(stringStringMap));
-                                        citationAdded.getInformation();
-                                        return repository.saveEvent(domainEvent);
+                                        CitationAdded citationAdded = (CitationAdded) domainEvent;
+                                        Availability availability = availabilityAtomicReference.get();
+                                        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                                        LocalDateTime citationInformation = LocalDateTime.parse(citationAdded.getInformation(), dateTimeFormatter);
+                                        for (LocalDateTime localDateTime:availability.getAvailability()) {
+                                            if (localDateTime.equals(citationInformation)){
+                                                return repository.saveEvent(domainEvent);
+                                            }
+                                        }
+                                    
+
+                                        System.out.println(citationInformation.toString());
+
+                                       // return repository.saveEvent(domainEvent);
+                                        return Mono.just(domainEvent);
                                     });
 
 
