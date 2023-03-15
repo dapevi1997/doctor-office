@@ -19,18 +19,17 @@ import java.util.Set;
 public class Week extends AggregateRoot<WeekId> {
     protected Set<Citation> citations;
     protected Availability availability;
-    protected State state;
     protected Date date;
 
 
 
     public Week(WeekId weekId, CitationId citationId, Infomation infomation, CitationState citationState,
-                PatientId patientId, Availability availability, State state, Date date) {
+                PatientId patientId, Availability availability, Date date) {
         super(weekId);
 
         subscribe(new WeekChange(this));
         appendChange(new WeekAdded(weekId.value(), citationId.value(), infomation.value(),citationState.value()
-                , patientId.value(), availability.getAvailability().toString(), state.value(),date.value())).apply();
+                , patientId.value(), availability.getAvailability().toString(),date.value())).apply();
     }
 
     private Week(WeekId weekId){
@@ -71,9 +70,6 @@ public class Week extends AggregateRoot<WeekId> {
         return availability;
     }
 
-    public State getState() {
-        return state;
-    }
 
     public Date getDate() {
         return date;

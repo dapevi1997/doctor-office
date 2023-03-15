@@ -39,7 +39,7 @@ public class AddWeekUseCase extends UseCaseForCommand<AddWeekCommand> {
 
             Week week = new Week(WeekId.of(command.getWeekId()), CitationId.of(command.getCitaId()), new Infomation(command.getInformation()),
                     new CitationState(command.getCitationState()), PatientId.of(command.getPatientId()),
-                     availability, new State(command.getState()), new Date(command.getDate()));
+                     availability, new Date(command.getDate()));
 
             return week.getUncommittedChanges();
         }).flatMap(event -> {

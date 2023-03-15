@@ -12,17 +12,16 @@ public class WeekAdded extends DomainEvent {
     private String citationState;
     private String patientId;
     private String availability;
-    private String state;
     private String date;
     public WeekAdded() {
         super("perez.daniel.weekadded");
     }
     public WeekAdded(String id,String citationId, String information, String citationState, String patientId,
-                     String availability, String state, String date){
+                     String availability, String date){
         super("perez.daniel.weekadded");
         this.id = id;
         this.availability = availability;
-        this.state = state;
+
         this.date = date;
         this.citationId = citationId;
         this.information = information;
@@ -39,9 +38,7 @@ public class WeekAdded extends DomainEvent {
         return availability;
     }
 
-    public String getState() {
-        return state;
-    }
+
 
     public String getDate() {
         return date;

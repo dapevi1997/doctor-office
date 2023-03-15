@@ -12,18 +12,17 @@ public class AddWeekCommand extends Command {
     private String patientId;
 
     private String availability;
-    private String state;
+
     private String date;
     public AddWeekCommand() {
     }
 
-    public AddWeekCommand(String weekId, String citaId, String information, String citationState, String patientId,String availability ,String state, String date) {
+    public AddWeekCommand(String weekId, String citaId, String information, String citationState, String patientId,String availability, String date) {
         this.weekId = weekId;
         this.citaId = citaId;
         this.information = information;
         this.citationState = citationState;
         this.patientId = patientId;
-        this.state = state;
         this.date = date;
         this.availability = availability;
     }
@@ -48,9 +47,6 @@ public class AddWeekCommand extends Command {
         return patientId;
     }
 
-    public String getState() {
-        return state;
-    }
 
     public String getDate() {
         return date;
