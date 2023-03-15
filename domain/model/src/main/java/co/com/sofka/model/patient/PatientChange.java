@@ -34,6 +34,7 @@ public class PatientChange extends EventChange {
 
         });
         apply((PatientDeleted event) -> {
+            patient.available = new Available(Boolean.valueOf(event.getAvailable()));
 
 
         });

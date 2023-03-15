@@ -13,7 +13,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 
 import java.util.Comparator;
 import java.util.Date;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Repository
 public class MongoRepositoryAdapter implements DomainEventRepository
@@ -63,6 +62,14 @@ public class MongoRepositoryAdapter implements DomainEventRepository
     @Override
     public Flux<DomainEvent> findClinicHistory(String patientId) {
         var query = new Query(Criteria.where("aggregateRootId").is(patientId).and("typeName").is("co.com.sofka.model.patient.events.ReviewAdded"));
+        return template.find(query, StoredEvent.class)
+                .sort(Comparator.comparing(event -> event.getOccurredOn()))
+                .map(storeEvent -> storeEvent.deserializeEvent(eventSerializer));
+    }
+
+    @Override
+    public Flux<DomainEvent> findPatientbyId(String patientId) {
+        var query = new Query(Criteria.where("aggregateRootId").is(patientId).and("typeName").is("co.com.sofka.model.patient.events.PatientAdded"));
         return template.find(query, StoredEvent.class)
                 .sort(Comparator.comparing(event -> event.getOccurredOn()))
                 .map(storeEvent -> storeEvent.deserializeEvent(eventSerializer));

@@ -5,6 +5,7 @@ import co.com.sofka.usecase.addcitation.AddCitationUseCase;
 import co.com.sofka.usecase.addpatient.AddPatientUseCase;
 import co.com.sofka.usecase.addreview.AddReviewUseCase;
 import co.com.sofka.usecase.addweek.AddWeekUseCase;
+import co.com.sofka.usecase.deletepatient.DeletePatientUseCase;
 import co.com.sofka.usecase.generic.commands.*;
 import co.com.sofka.usecase.getcitations.GetCitationUseCase;
 import co.com.sofka.usecase.getclinichistory.GetClinicHistoryUseCase;
@@ -101,6 +102,18 @@ public class RouterRest {
                         .body(BodyInserters.fromPublisher(getClinicHistoryUsecase.apply(
                                 request
                                         .bodyToMono(GetClinicHistoryCommand.class)
+                        ), DomainEvent.class)));
+
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> deletePatient(DeletePatientUseCase deletePatientUseCase) {
+        return route(
+                DELETE("/api/delete/patient").and(accept(MediaType.APPLICATION_JSON)), request -> ServerResponse.ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(BodyInserters.fromPublisher(deletePatientUseCase.apply(
+                                request
+                                        .bodyToMono(DeletePatientCommand.class)
                         ), DomainEvent.class)));
 
     }

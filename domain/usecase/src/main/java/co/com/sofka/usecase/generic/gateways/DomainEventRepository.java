@@ -15,6 +15,7 @@ public interface DomainEventRepository {
 
     Flux<DomainEvent> findClinicHistory(String weekId);
 
+    Flux<DomainEvent> findPatientbyId(String patientId);
 
 
     //Mono<Boolean> exist(String aggregateId);

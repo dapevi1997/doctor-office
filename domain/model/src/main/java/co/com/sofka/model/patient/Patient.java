@@ -61,6 +61,13 @@ public class Patient  extends AggregateRoot<PatientId> {
         appendChange(new PersonalDataUpdated(patientId.value(), personalData.value()));
 
     }
+    public void updateAvailable(PatientId patientId, Available available){
+        Objects.requireNonNull(patientId);
+        Objects.requireNonNull(available);
+        subscribe(new PatientChange(this));
+        appendChange(new PatientDeleted(patientId.value(), available.value().toString()));
+
+    }
     public void addReview(PatientId patientId, ReviewId reviewId, Annotation annotation){
         subscribe(new PatientChange(this));
         appendChange(new ReviewAdded(patientId.value(), reviewId.value(), annotation.value()));
