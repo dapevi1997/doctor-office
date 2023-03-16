@@ -29,7 +29,7 @@ public class GetCitationUseCase extends UseCaseForCommand<GetCitationCommand> {
                      .flatMapIterable(events -> {
                          Week week = Week.from(WeekId.of(command.getIdWeek()), events);
                          return week.getCitations();
-                     }).map(citation -> {
+                     }).filter(citation -> citation.getCitationState().value().equals("true")).map(citation -> {
                          return new CitationAdded(citation.identity().value(),citation.getInfomation().value(),citation.getCitationState().value(),
                                  citation.getPatientId().value(),citation.getWeekId().value());
                     });
