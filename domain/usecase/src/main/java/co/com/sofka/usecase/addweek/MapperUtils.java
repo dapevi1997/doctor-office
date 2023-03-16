@@ -35,15 +35,17 @@ public class MapperUtils {
     public Function<String, Availability> mapperToStringToAvailability(){
         return s -> {
 
-            s.replace("[","");
+            s = s.replace("[","");
+            s = s.replace("]","");
 
             String[] dateTimeString = s.split(",");
             Set<LocalDateTime> availabilityArray = new HashSet<>();
 
             for (Integer i = 0; i< dateTimeString.length; i++){
 
-                DateTimeFormatter dateTimeFormatter =  DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                DateTimeFormatter dateTimeFormatter =  DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
                 String date = dateTimeString[i];
+                date = date.replace(" ","");
                 LocalDateTime dateTime = LocalDateTime.parse(date, dateTimeFormatter);
                 availabilityArray.add(dateTime);
             }

@@ -34,7 +34,7 @@ public class AddWeekUseCase extends UseCaseForCommand<AddWeekCommand> {
     public Flux<DomainEvent> apply(Mono<AddWeekCommand> addWeekCommandMono) {
         return addWeekCommandMono.flatMapIterable(command->{
 
-            Availability availability = mapperUtils.mapperToAvailability().apply(command.getAvailability());
+            Availability availability = mapperUtils.mapperToStringToAvailability().apply(command.getAvailability());
 
 
             Week week = new Week(WeekId.of(command.getWeekId()), CitationId.of(command.getCitaId()), new Infomation(command.getInformation()),

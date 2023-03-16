@@ -2,14 +2,13 @@ package co.com.sofka.model.week;
 
 import co.com.sofka.model.patient.Patient;
 import co.com.sofka.model.patient.PatientChange;
+import co.com.sofka.model.patient.events.PatientDeleted;
 import co.com.sofka.model.patient.generic.AggregateRoot;
 import co.com.sofka.model.patient.generic.DomainEvent;
+import co.com.sofka.model.patient.values.Available;
 import co.com.sofka.model.patient.values.PatientId;
 import co.com.sofka.model.week.entities.Citation;
-import co.com.sofka.model.week.events.CitationAdded;
-import co.com.sofka.model.week.events.CitationCanceled;
-import co.com.sofka.model.week.events.WeekAdded;
-import co.com.sofka.model.week.events.WeekStateConsulted;
+import co.com.sofka.model.week.events.*;
 import co.com.sofka.model.week.values.*;
 
 import java.util.List;
@@ -27,7 +26,7 @@ public class Week extends AggregateRoot<WeekId> {
                 PatientId patientId, Availability availability, Date date) {
         super(weekId);
 
-        subscribe(new WeekChange(this));
+         subscribe(new WeekChange(this));
         appendChange(new WeekAdded(weekId.value(), citationId.value(), infomation.value(),citationState.value()
                 , patientId.value(), availability.getAvailability().toString(),date.value())).apply();
     }
@@ -48,9 +47,20 @@ public class Week extends AggregateRoot<WeekId> {
         Objects.requireNonNull(citationId);
         Objects.requireNonNull(infomation);
         Objects.requireNonNull(citationState);
+        subscribe(new WeekChange(this));
         appendChange(new CitationAdded(citationId.value(), infomation.value(), citationState.value(), patientId.value(), weekId.value()));
 
     }
+
+    public void updateAvailability(WeekId weekId,Availability availability) {
+
+        Objects.requireNonNull(weekId);
+        Objects.requireNonNull(availability);
+        subscribe(new WeekChange(this));
+        appendChange(new AvailabilityUpdated(weekId.value(), availability.getAvailability().toString()));
+    }
+
+
     public void cancelateCitation(){
 
         appendChange(new CitationCanceled());
@@ -74,4 +84,7 @@ public class Week extends AggregateRoot<WeekId> {
     public Date getDate() {
         return date;
     }
+
+
+
 }
