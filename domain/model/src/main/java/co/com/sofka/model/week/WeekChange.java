@@ -43,6 +43,11 @@ public class WeekChange extends EventChange {
 
         });
         apply((CitationCanceled event) -> {
+            week.citations.forEach(citation -> {
+                if (citation.identity().value().equals(event.getCitaId())){
+                    citation.setCitationState(new CitationState(event.getCitationState()));
+                }
+            });
 
         });
         apply((WeekStateConsulted event) -> {

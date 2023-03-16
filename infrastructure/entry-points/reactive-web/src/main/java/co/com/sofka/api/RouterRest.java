@@ -5,6 +5,7 @@ import co.com.sofka.usecase.addcitation.AddCitationUseCase;
 import co.com.sofka.usecase.addpatient.AddPatientUseCase;
 import co.com.sofka.usecase.addreview.AddReviewUseCase;
 import co.com.sofka.usecase.addweek.AddWeekUseCase;
+import co.com.sofka.usecase.cancelcitation.CancelCitationUseCase;
 import co.com.sofka.usecase.deletepatient.DeletePatientUseCase;
 import co.com.sofka.usecase.generic.commands.*;
 import co.com.sofka.usecase.getcitations.GetCitationUseCase;
@@ -114,6 +115,18 @@ public class RouterRest {
                         .body(BodyInserters.fromPublisher(deletePatientUseCase.apply(
                                 request
                                         .bodyToMono(DeletePatientCommand.class)
+                        ), DomainEvent.class)));
+
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> cancelCitation(CancelCitationUseCase cancelCitationUseCase) {
+        return route(
+                POST("/api/cancel/citation").and(accept(MediaType.APPLICATION_JSON)), request -> ServerResponse.ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(BodyInserters.fromPublisher(cancelCitationUseCase.apply(
+                                request
+                                        .bodyToMono(CancelCitationCommand.class)
                         ), DomainEvent.class)));
 
     }

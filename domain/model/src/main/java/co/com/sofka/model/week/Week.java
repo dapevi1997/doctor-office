@@ -61,9 +61,12 @@ public class Week extends AggregateRoot<WeekId> {
     }
 
 
-    public void cancelateCitation(){
-
-        appendChange(new CitationCanceled());
+    public void cancelateCitation(WeekId weekId, CitationId citationId, CitationState citationState){
+        Objects.requireNonNull(weekId);
+        Objects.requireNonNull(citationId);
+        Objects.requireNonNull(citationState);
+        subscribe(new WeekChange(this));
+        appendChange(new CitationCanceled(weekId.value(), citationId.value(), citationState.value()));
 
     }
     public void consultWeekState(){

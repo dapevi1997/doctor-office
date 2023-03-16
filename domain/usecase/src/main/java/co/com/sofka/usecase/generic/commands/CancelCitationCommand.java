@@ -1,20 +1,19 @@
-package co.com.sofka.model.week.events;
+package co.com.sofka.usecase.generic.commands;
 
-import co.com.sofka.model.patient.generic.DomainEvent;
+import co.com.sofka.usecase.generic.Command;
 
-public class CitationCanceled extends DomainEvent {
+public class CancelCitationCommand extends Command {
     private String weekId;
     private String citaId;
     private String citationState;
-    public CitationCanceled() {
-        super("perez.daniel.citationcanceled");
+
+    public CancelCitationCommand() {
     }
-    public CitationCanceled(String weekId, String citaId, String citationState){
-        super("perez.daniel.citationcanceled");
+
+    public CancelCitationCommand(String weekId, String citaId, String citationState) {
         this.weekId = weekId;
         this.citaId = citaId;
         this.citationState = citationState;
-
     }
 
     public String getWeekId() {

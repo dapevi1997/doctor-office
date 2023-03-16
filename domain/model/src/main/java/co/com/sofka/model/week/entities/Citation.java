@@ -37,4 +37,8 @@ public class Citation extends Entity<CitationId> {
     public WeekId getWeekId() {
         return weekId;
     }
+
+    public void setCitationState(CitationState citationState) {
+        this.citationState = citationState;
+    }
 }
