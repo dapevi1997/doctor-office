@@ -13,10 +13,10 @@ import org.springframework.data.mongodb.core.query.Criteria;
 
 import java.util.Comparator;
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Repository
-public class MongoRepositoryAdapter implements DomainEventRepository
-{
+public class MongoRepositoryAdapter implements DomainEventRepository {
     private final ReactiveMongoTemplate template;
     private final JSONMapper eventSerializer;
     private Object Boolean;
@@ -75,11 +75,12 @@ public class MongoRepositoryAdapter implements DomainEventRepository
                 .map(storeEvent -> storeEvent.deserializeEvent(eventSerializer));
     }
 
-    /*    @Override
-    public Mono<Boolean> exist(String aggregateId) {
+/*    @Override
+    public Mono<Boolean> exists(String aggregateId) {
         AtomicReference<Boolean> flag;
         var query = new Query(Criteria.where("aggregateRootId").is(aggregateId).and("typeName").is("co.com.sofka.model.patient.events.PatientAdded"));
         return template.findOne(query, StoredEvent.class)
+
                 .map(storeEvent -> true)
                 .switchIfEmpty(Mono.just(false));
 
