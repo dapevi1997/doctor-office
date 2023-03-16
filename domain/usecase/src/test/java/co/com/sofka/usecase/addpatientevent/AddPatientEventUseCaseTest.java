@@ -1,9 +1,7 @@
-package co.com.sofka.usecase.addpatient;
+package co.com.sofka.usecase.addpatientevent;
 
 import co.com.sofka.model.patient.events.PatientAdded;
 import co.com.sofka.model.patient.generic.DomainEvent;
-import co.com.sofka.model.patient.values.*;
-import co.com.sofka.usecase.generic.commands.AddPatientCommand;
 import co.com.sofka.usecase.generic.gateways.DomainEventRepository;
 import co.com.sofka.usecase.generic.gateways.EventBus;
 import org.junit.jupiter.api.Assertions;
@@ -14,7 +12,6 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -22,51 +19,44 @@ import reactor.test.StepVerifier;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-class AddPatientUseCaseTest {
-
+class AddPatientEventUseCaseTest {
     @Mock
     private DomainEventRepository repository;
 
     @Mock
     private EventBus bus;
-    @SpyBean
-    private AddPatientUseCase useCase;
+
+    private AddPatientEventUseCase useCase;
 
     @BeforeEach
     void setUp() {
-        useCase = new AddPatientUseCase(repository, bus);
+        useCase = new AddPatientEventUseCase(repository,bus);
     }
 
     @Test
     void apply() {
         //Arrange
-        final String AGGREGATE_ID = "test-addPatient-id";
-        AddPatientCommand command = new AddPatientCommand(PatientId.of("patientId"), new PersonalData("personalData"),
-                new ClinicHistory("clinicHistory"), ReviewId.of("reviewId"), new Annotation("anotation"), "available");
+        final String AGGREGATE_ID = "test-addpatient-id";
 
         PatientAdded event = new PatientAdded("idPatient", "idReview", "anotation",
-                "email", "clinicHistory", "available");
+                "email", "clinicHistory", "false");
         event.setAggregateRootId(AGGREGATE_ID);
 
-        Mockito.when(repository.saveEvent(ArgumentMatchers.any(PatientAdded.class)))
-                .thenAnswer(
-                     invocation ->    Mono.just(invocation.getArgument(0))
-                );
-       Mockito.doAnswer(i -> null).when(bus).publish(ArgumentMatchers.any(DomainEvent.class));
+        Mockito.when(repository.saveEvent(ArgumentMatchers.any(PatientAdded.class))).thenAnswer(
+                invocation -> Mono.just(invocation.getArgument(0))
+        );
+
+        Mockito.doAnswer(i->null).when(bus).publish(ArgumentMatchers.any(DomainEvent.class));
 
         //Act
-        Flux<DomainEvent> result = useCase.apply(Mono.just(command));
+        Flux<DomainEvent> result = useCase.apply(Mono.just(event));
 
         StepVerifier.create(result)
-                //Assert
                 .expectNextMatches(event1 -> {
                     PatientAdded patientAdded = (PatientAdded) event1;
-                    Assertions.assertEquals(patientAdded.getId(), event.getId());
+                    Assertions.assertEquals(patientAdded.getAvailable(), event.getAvailable());
                     return true;
-                })
-                .verifyComplete();
-
+                }).verifyComplete();
 
     }
-
 }

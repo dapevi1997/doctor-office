@@ -48,4 +48,16 @@ public class PatientAdded extends DomainEvent {
     public String getAvailable() {
         return available;
     }
+
+    @Override
+    public String toString() {
+        return "PatientAdded{" +
+                "id='" + id + '\'' +
+                ", identity='" + identity + '\'' +
+                ", clinicHistory='" + clinicHistory + '\'' +
+                ", reviewId='" + reviewId + '\'' +
+                ", annotation='" + annotation + '\'' +
+                ", available='" + available + '\'' +
+                '}';
+    }
 }
