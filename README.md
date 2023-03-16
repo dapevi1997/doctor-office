@@ -137,7 +137,7 @@ Body:\
     "citationState": "citationState",\
     "patientId": "patientId",\
     "availability": "[2022-03-14T08:00,2022-03-14T09:00]",\
-    "date":"2022-03-14 08:00;2022-03-20 19:00"\
+    "date":"2022-03-14;2022-03-20"\
 }\
 Respuesta: [\
     {\
@@ -150,7 +150,7 @@ Respuesta: [\
         "citationState": "citationState",\
         "patientId": "patientId",\
         "availability": "[2022-03-14T08:00, 2022-03-14T09:00]",\
-        "date": "2022-03-14 08:00;2022-03-20 19:00",\
+        "date": "2022-03-14;2022-03-20",\
         "aggregateName": "week"
 
 
